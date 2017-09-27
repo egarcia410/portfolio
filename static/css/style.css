@@ -1,0 +1,136 @@
+/* blue 2196F3 */
+/* orange FF5722 */
+/* green 4CAF50 */
+/* red F44336 */
+/* grey nav bar EEEEEE */
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+    flex-direction: column;
+}
+
+.btn {
+    border: 0;    
+}
+
+/* Home */
+.home {
+    background-color: #2196F3;
+}
+
+.home  h1, p {
+    font-size: 3rem; 
+}
+
+.icons {
+    margin-top: 30px;
+}
+
+.icons > ul {
+    list-style-type: none;
+}
+
+.icon {
+    color: #f1c40f;
+}
+
+/* About */
+.about {
+    background-color: #02C9A8;
+}
+
+.aboutMe {
+    border-radius: 10px;
+    width: 90%;
+    height: 80%;
+    margin-top: 50px;
+    overflow: scroll;
+    background-color: #0B877D;
+}
+
+.aboutMe  h2 {
+    color: lightcoral;
+    padding-bottom: 15px;
+}
+
+.aboutTop {
+    background-color: #031727;
+}
+
+.img {
+    margin: 10px;
+    height: 150px;
+    width: 150px;
+}
+
+.aboutBottom {
+    font-size: 30px;
+    padding: 10px;
+    color: lightgrey;
+}
+
+/* Projects */
+.projects {
+    background-color: #F44336;
+    height: auto;
+}
+.projTitle {
+    font-size: 3.5rem;
+    margin-top: 80px;
+    margin-bottom: 30px;
+}
+
+.cards {
+    justify-content: center;
+}
+
+.card {
+    margin: 20px;
+}
+
+.card > img {
+    padding: 10px;
+}
+
+.card-text {
+    font-size: 2rem;
+    margin-bottom: 0;
+}
+
+.projectBtn {
+    margin: 10px;
+    background-color: #E48400;
+}
+
+/* Contact */
+.contact {
+    background-color: #8e44ad;
+}
+
+form {
+    width: 50%;
+}   
+
+.contactTitle {
+    margin-top: 50px;
+    margin-bottom: 30px;
+    color: cyan;
+    font-size: 2.5rem;
+}
+
+.contactBtn {
+    background-color: #1B9CB1;
+}
