@@ -1,36 +1,63 @@
-from jinja2 import Environment, FileSystemLoader
-from flask import Flask, request, render_template
+import tornado.ioloop
+import tornado.web
 
-app = Flask(__name__)
+from jinja2 import Environment, PackageLoader, select_autoescape, FileSystemLoader
 
-# ENV = Environment(loader=FileSystemLoader('./templates'))
+template_dir = 'static/img'
 
-# PAGE_LIST = ['home', 'about', 'projects', 'contact',]
+ENV = Environment(
+    loader=PackageLoader('portfolio'),
+    autoescape=select_autoescape(['html', 'xml'])
+)
 
-@app.route("/")
-def home():
-    return render_template('home.html')
+class TemplateHandler(tornado.web.RequestHandler):
+    def render_template (self, tpl, **context):
+        template = ENV.get_template(tpl)
+        self.write(template.render(**context))
 
-@app.route("/about")
-def about():
-    return render_template('about.html')
+class MainHandler(TemplateHandler):
+    def get(self):
+        # self.set_header(
+        # 'Cache-Control',
+        # 'no-store, no-cache, must-revalidate, max-age=0')
+        self.render_template("home.html")
 
-@app.route("/projects")
-def projects():
-    return render_template('projects.html')
+class AboutHandler(TemplateHandler):
+    def get(self):
+        # self.set_header(
+        # 'Cache-Control',
+        # 'no-store, no-cache, must-revalidate, max-age=0')
+        self.render_template("about.html")
 
-@app.route("/contact")
-def contact():
-    return render_template('contact.html')
+class ProjectsHandler(TemplateHandler):
+    def get(self):
+        # self.set_header(
+        # 'Cache-Control',
+        # 'no-store, no-cache, must-revalidate, max-age=0')
+        self.render_template("projects.html")
 
+class ContactHandler(TemplateHandler):
+    def get(self):
+        # self.set_header(
+        # 'Cache-Control',
+        # 'no-store, no-cache, must-revalidate, max-age=0')
+        self.render_template("contact.html")
 
-    # for item in PAGE_LIST:
-    #     file_name = item + '.html'
-    #     template = ENV.get_template(file_name)
-    #     html = template.render()
-
-    #     with open(file_name, 'w') as out_file:
-    #         out_file.write(html)
+def make_app():
+    return tornado.web.Application([
+        (r"/", MainHandler),
+        (r"/about", AboutHandler),
+        (r"/projects", ProjectsHandler),
+        (r"/contact", ContactHandler),
+        (
+        r"/static/(.*)",
+        tornado.web.StaticFileHandler,
+        {'path': 'static'}
+        )
+    ], autoreload=True)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    tornado.log.enable_pretty_logging()
+    app = make_app()
+    app.listen(8888, print('Creating magic on port 8888'))
+    tornado.ioloop.IOLoop.current().start()
