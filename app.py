@@ -19,30 +19,30 @@ class TemplateHandler(tornado.web.RequestHandler):
 
 class MainHandler(TemplateHandler):
     def get(self):
-        # self.set_header(
-        # 'Cache-Control',
-        # 'no-store, no-cache, must-revalidate, max-age=0')
+        self.set_header(
+        'Cache-Control',
+        'no-store, no-cache, must-revalidate, max-age=0')
         self.render_template("home.html")
 
 class AboutHandler(TemplateHandler):
     def get(self):
-        # self.set_header(
-        # 'Cache-Control',
-        # 'no-store, no-cache, must-revalidate, max-age=0')
+        self.set_header(
+        'Cache-Control',
+        'no-store, no-cache, must-revalidate, max-age=0')
         self.render_template("about.html")
 
 class ProjectsHandler(TemplateHandler):
     def get(self):
-        # self.set_header(
-        # 'Cache-Control',
-        # 'no-store, no-cache, must-revalidate, max-age=0')
+        self.set_header(
+        'Cache-Control',
+        'no-store, no-cache, must-revalidate, max-age=0')
         self.render_template("projects.html")
 
 class ContactHandler(TemplateHandler):
     def get(self):
-        # self.set_header(
-        # 'Cache-Control',
-        # 'no-store, no-cache, must-revalidate, max-age=0')
+        self.set_header(
+        'Cache-Control',
+        'no-store, no-cache, must-revalidate, max-age=0')
         self.render_template("contact.html")
 
 def make_app():
