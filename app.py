@@ -1,9 +1,11 @@
+import os
+
 import tornado.ioloop
 import tornado.web
 
-from jinja2 import Environment, PackageLoader, select_autoescape, FileSystemLoader
+from jinja2 import Environment, PackageLoader, select_autoescape
 
-template_dir = 'static/img'
+PORT = int(os.environ.get('PORT', '8888'))
 
 ENV = Environment(
     loader=PackageLoader('portfolio'),
@@ -59,5 +61,5 @@ def make_app():
 if __name__ == "__main__":
     tornado.log.enable_pretty_logging()
     app = make_app()
-    app.listen(8888, print('Creating magic on port 8888'))
+    app.listen(PORT, print('Creating magic on port {}'.format(PORT)))
     tornado.ioloop.IOLoop.current().start()
