@@ -96,7 +96,6 @@ def make_app():
 
 if __name__ == "__main__":
     tornado.log.enable_pretty_logging()
-    
     app = make_app()
     app.listen(PORT, print('Creating magic on port {}'.format(PORT)))
     tornado.ioloop.IOLoop.current().start()
