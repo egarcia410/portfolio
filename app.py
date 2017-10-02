@@ -9,7 +9,7 @@ from jinja2 import Environment, PackageLoader, select_autoescape
 
 load_dotenv('.env')
 
-PORT = int(os.environ.get('PORT', '8888'))
+PORT = int(os.environ.get('PORT', '8000'))
 
 ENV = Environment(
     loader=PackageLoader('portfolio'),
@@ -20,8 +20,10 @@ SES_CLIENT = boto3.client(
   'ses',
   aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'),
   aws_secret_access_key=os.environ.get('AWS_SECRET_KEY'),
-  region_name="us-east-1"
+  region_name="us-west-2"
 )
+
+print(os.environ.get('AWS_ACCESS_KEY'), os.environ.get('AWS_SECRET_KEY'))
 
 class TemplateHandler(tornado.web.RequestHandler):
     def render_template (self, tpl, **context):
@@ -56,7 +58,7 @@ class ContactHandler(TemplateHandler):
         'no-store, no-cache, must-revalidate, max-age=0')
         self.render_template("contact.html")
 
-    def post (self, page):
+    def post (self):
         name = self.get_body_argument('name')
         email = self.get_body_argument('email')
         text = self.get_body_argument('text')
@@ -69,15 +71,15 @@ class ContactHandler(TemplateHandler):
             'Body': {
             'Text': {
                 'Charset': 'UTF-8',
-                'Data': 'Email: {}\nPassword: {}\n'.format(email, password),
+                'Data': text,
             },
             },
             'Subject': {'Charset': 'UTF-8', 'Data': 'Portfolio Contact'},
         },
         Source='egarcia410@gmail.com',
         )
-        message = 'Thank you, your email has been sent!'
-        self.render_template('contact.html', {'message': message })
+        messages = 'Thank you, your email has been sent!'
+        self.render_template('contact.html', message=messages )
 
 def make_app():
     return tornado.web.Application([
