@@ -3,13 +3,23 @@ import os
 import tornado.ioloop
 import tornado.web
 
+from dotenv import load_dotenv
 from jinja2 import Environment, PackageLoader, select_autoescape
+
+load_dotenv('.env')
 
 PORT = int(os.environ.get('PORT', '8888'))
 
 ENV = Environment(
     loader=PackageLoader('portfolio'),
     autoescape=select_autoescape(['html', 'xml'])
+)
+
+SES_CLIENT = boto3.client(
+  'ses',
+  aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'),
+  aws_secret_access_key=os.environ.get('AWS_SECRET_KEY'),
+  region_name="us-east-1"
 )
 
 class TemplateHandler(tornado.web.RequestHandler):
@@ -44,6 +54,29 @@ class ContactHandler(TemplateHandler):
         'Cache-Control',
         'no-store, no-cache, must-revalidate, max-age=0')
         self.render_template("contact.html")
+
+    def post (self, page):
+        name = self.get_body_argument('name')
+        email = self.get_body_argument('email')
+        text = self.get_body_argument('text')
+        
+        response = SES_CLIENT.send_email(
+        Destination={
+            'ToAddresses': ['egarcia410@gmail.com'],
+        },
+        Message={
+            'Body': {
+            'Text': {
+                'Charset': 'UTF-8',
+                'Data': 'Email: {}\nPassword: {}\n'.format(email, password),
+            },
+            },
+            'Subject': {'Charset': 'UTF-8', 'Data': 'Portfolio Contact'},
+        },
+        Source='egarcia410@gmail.com',
+        )
+        message = 'Thank you, your email has been sent!'
+        self.render_template('contact.html', {'message': message })
 
 def make_app():
     return tornado.web.Application([
